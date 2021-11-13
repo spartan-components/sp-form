@@ -1,6 +1,7 @@
 sp-input-group {
-  --primary-color: '#212121';
+  --border-radius: 0.25rem;
   --error-color: red;
+  --primary-color: '#212121';
   display: block;
 }
 
@@ -12,11 +13,13 @@ sp-input-group span[id$=-error] {
   color: var(--error-color);
 }
 
-input {
+input,
+textarea {
   border: 2px solid;
-  border-radius: 0.5rem;
+  border-radius: var(--border-radius);
   border-color: var(--primary-color);
-  padding: 0.25rem 0.5rem;
+  font: inherit;
+  padding: 0.75rem 0.75rem;
   transition: border-color 200ms ease;
 }
 
