@@ -1,0 +1,27 @@
+sp-input-group {
+  --primary-color: '#212121';
+  --error-color: red;
+  display: block;
+}
+
+sp-input-group > * {
+  display: block;
+}
+
+sp-input-group span[id$=-error] {
+  color: var(--error-color);
+  height: 1rem;
+}
+
+input {
+  border: 2px solid;
+  border-radius: 0.5rem;
+  border-color: var(--primary-color);
+  padding: 0.25rem 0.5rem;
+  transition: border-color 200ms ease;
+}
+
+.no-wc input:invalid,
+[aria-invalid=true] {
+  border-color: var(--error-color);
+}

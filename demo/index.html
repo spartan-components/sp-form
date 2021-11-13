@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+  <meta charset="utf-8">
+  <link rel="stylesheet" href="../src/static.css" />
+</head>
+<body class="no-wc">
+  <sp-form>
+    <form title="sp-form">
+  
+      <fieldset>
+  
+        <legend>Personal info</legend>
+        
+        <sp-input-group class="half-width">
+          <label for="firstname">First name</label>
+          <input type="text" name="firstname" id="firstname" required>
+        </sp-input-group>
+  
+        <sp-input-group class="half-width">
+          <label for="lastname">Last name</label>
+          <input type="text" name="lastname" id="lastname" required>
+        </sp-input-group>
+  
+        <sp-input-group class="full-width">
+          <label for="email">E-Mail</label>
+          <input type="email" name="email" id="email" required>
+        </sp-input-group>
+  
+      </fieldset>
+  
+      <button type="submit">Submit</button>
+    </form>
+  </sp-form>
+  <script>
+    if (window.customElements) document.querySelector('body').classList.remove('no-wc');
+  </script>
+  <script type="module">
+    import '../sp-form.js'
+  </script>
+</body>
+</html>
