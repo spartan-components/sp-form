@@ -10,7 +10,6 @@ sp-input-group > * {
 
 sp-input-group span[id$=-error] {
   color: var(--error-color);
-  height: 1rem;
 }
 
 input {

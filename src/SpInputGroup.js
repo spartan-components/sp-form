@@ -1,15 +1,6 @@
 import { html, LitElement } from 'lit';
 
 export class SpInputGroup extends LitElement {
-  // static get styles() {
-  //   return css`
-  //     :host {
-  //       display: block;
-  //       padding: 25px;
-  //       color: var(--sp-form-text-color, #000);
-  //     }
-  //   `;
-  // }
 
   static get properties() {
     return {
@@ -18,10 +9,6 @@ export class SpInputGroup extends LitElement {
       },
       id: {
         type: String
-      },
-      hydrated: {
-        type: Boolean,
-        reflect: true
       }
     }
   }
@@ -30,21 +17,12 @@ export class SpInputGroup extends LitElement {
     super();
     this.error = '';
     this.id = '';
-    this.hydrated = true;
   }
-
-  // __increment() {
-  //   this.counter += 1;
-  // }
-
-  // connectedCallback() {
-  //   super.connectedCallback();
-  // }
   
   firstUpdated() {
     super.firstUpdated();
     // get reference to the input field
-    const input = this.querySelector('input');
+    const input = this.querySelector('input,textarea');
     // get id of input field
     const id = input.getAttribute('id');
     // generate id for error message
@@ -54,8 +32,12 @@ export class SpInputGroup extends LitElement {
   }
 
   render() {
+    // get input element, so we can move it underneath the error text
+    const input = this.querySelector('input');
+
     return html`
       <span id=${this.id}>${this.error}</span>
+      ${input}
     `;
   }
 

@@ -1,30 +1,40 @@
 import { html, LitElement } from 'lit';
 
 export class SpForm extends LitElement {
-  // static get styles() {
-  //   return css`
-  //     :host {
-  //       display: block;
-  //       padding: 25px;
-  //       color: var(--sp-form-text-color, #000);
-  //     }
-  //   `;
-  // }
 
-  static get properties() {
-    return {
-      valid: { type: String }
-    }
-  }
+  // static get properties() {
+  //   return {
+  //     hintEmail: {
+  //       attribute: 'hint-email'
+  //     },
+  //     hintOverflow: {
+  //       attribute: 'hint-overflow'
+  //     },
+  //     hintRequired: {
+  //       attribute: 'hint-required'
+  //     },
+  //     hintUnderflow: {
+  //       attribute: 'hint-underflow'
+  //     }
+  //   }
+  // }
 
   // constructor() {
   //   super();
-  //   this.title = 'Hey there';
-  //   this.counter = 5;
+  //   this.hintEmail = '';
+  //   this.hintOverflow = '';
+  //   this.hintRequired = '';
+  //   this.hintUnderflow = '';
   // }
 
-  // __increment() {
-  //   this.counter += 1;
+  // // mapping errors to hints
+  // get hints() {
+  //   return {
+  //     email: this.hintEmail,
+  //     overflow: this.hintOverflow,
+  //     required: this.hintRequired,
+  //     underflow: this.hintUnderflow
+  //   }
   // }
 
   get form() {
@@ -52,12 +62,13 @@ export class SpForm extends LitElement {
         || field.type === 'button'
       ) return;
 
-      if (e.target.validity.valid === true) {
+      if (field.validity.valid === true) {
         // field is valid: reset aria-invalid to communicate the state of the input to assistive technologies
         field.setAttribute('aria-invalid', false);
         // also reset the message
         parent.setAttribute('error', '');
       } else {
+        // setCustomValidity(field, this.hints);
         field.setAttribute('aria-invalid', true);
         parent.setAttribute('error', field.validationMessage);
       }
