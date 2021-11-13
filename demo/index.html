@@ -1,16 +1,21 @@
 <!doctype html>
-<html lang="en-GB">
+<html lang="de-CH">
 <head>
   <meta charset="utf-8">
   <link rel="stylesheet" href="../src/static.css" />
 </head>
 <body class="no-wc">
-  <sp-form>
+  <sp-form
+    hint-required="{field} eingeben"
+    hint-email="{field} benötigt ein @-Symbol"
+    hint-underflow="{field} darf nicht kleiner als {min} sein"
+    hint-overflow="{field} darf nicht grösser als {max} sein"
+  >
     <form title="sp-form">
   
       <fieldset>
   
-        <legend>Personal info</legend>
+        <legend>Persönliche Angaben</legend>
         
         <sp-input-group class="half-width">
           <label for="firstname">First name</label>
@@ -26,7 +31,11 @@
           <label for="email">E-Mail</label>
           <input type="email" name="email" id="email" required>
         </sp-input-group>
-  
+
+        <sp-input-group>
+          <label for="age">Alter</label>
+          <input type="number" name="age" id="age" required min="0">
+        </sp-input-group>
       </fieldset>
   
       <button type="submit">Submit</button>
