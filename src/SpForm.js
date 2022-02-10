@@ -76,7 +76,25 @@ export class SpForm extends LitElement {
 
     form.addEventListener('submit', (e) => {
       e.preventDefault();
-      if (form.checkValidity() === true) form.submit();
+      const fields = [...e.target.elements];
+      const fieldsFiltered = fields.filter(field => !['fieldset', 'button'].includes(field.nodeName.toLowerCase()))
+      if (form.checkValidity() === true) {
+        form.submit();
+      } else {
+        [...fieldsFiltered].forEach(field => {
+          const parent = field.closest('sp-input-group');
+          if (field.validity.valid === true) {
+            // field is valid: reset aria-invalid to communicate the state of the input to assistive technologies
+            field.setAttribute('aria-invalid', false);
+            // also reset the message
+            parent.setAttribute('error', '');
+          } else {
+            // setCustomValidity(field, this.hints);
+            field.setAttribute('aria-invalid', true);
+            parent.setAttribute('error', field.validationMessage);
+          }
+        });
+      }
     });
   }
 
