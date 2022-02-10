@@ -79,7 +79,7 @@ export class SpForm extends LitElement {
       const fields = [...e.target.elements];
       const fieldsFiltered = fields.filter(field => !['fieldset', 'button'].includes(field.nodeName.toLowerCase()))
       if (form.checkValidity() === true) {
-        form.submit();
+        form.requestSubmit();
       } else {
         [...fieldsFiltered].forEach(field => {
           const parent = field.closest('sp-input-group');
