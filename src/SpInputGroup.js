@@ -33,7 +33,7 @@ export class SpInputGroup extends LitElement {
 
   render() {
     // get input element, so we can move it underneath the error text
-    const input = this.querySelector('input');
+    const input = this.querySelector('input,textarea');
 
     return html`
       <span id=${this.id}>${this.error}</span>
