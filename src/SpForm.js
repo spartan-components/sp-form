@@ -53,6 +53,21 @@ export class SpForm extends LitElement {
       if (!valid) this.addErrorMessage({ input });
       if (valid) this.removeErrorMessage({ input });
     }));
+
+    form.addEventListener('submit', event => {
+      event.preventDefault();
+      
+      if (form.checkValidity()) {
+        form.requestSubmit();
+      } else {
+        inputs.forEach(input => {
+          const { valid } = input.element.validity;
+
+          if (!valid) this.addErrorMessage({ input });
+          if (valid) this.removeErrorMessage({ input });
+        });
+      }
+    });
   }
 
   addErrorMessage({ input }) {
