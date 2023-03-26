@@ -1,109 +1,87 @@
-import { html, LitElement } from 'lit';
+import { LitElement, html } from 'lit';
 
 export class SpForm extends LitElement {
 
-  // static get properties() {
-  //   return {
-  //     hintEmail: {
-  //       attribute: 'hint-email'
-  //     },
-  //     hintOverflow: {
-  //       attribute: 'hint-overflow'
-  //     },
-  //     hintRequired: {
-  //       attribute: 'hint-required'
-  //     },
-  //     hintUnderflow: {
-  //       attribute: 'hint-underflow'
-  //     }
-  //   }
-  // }
-
-  // constructor() {
-  //   super();
-  //   this.hintEmail = '';
-  //   this.hintOverflow = '';
-  //   this.hintRequired = '';
-  //   this.hintUnderflow = '';
-  // }
-
-  // // mapping errors to hints
-  // get hints() {
-  //   return {
-  //     email: this.hintEmail,
-  //     overflow: this.hintOverflow,
-  //     required: this.hintRequired,
-  //     underflow: this.hintUnderflow
-  //   }
-  // }
-
-  get form() {
-    return this.querySelector('form');
+  static properties = {
+    _form: {
+      state: true
+    }
   }
 
-  _validateForm() {
-    // get reference to form
-    const { form } = this;
+  firstUpdated() {
 
-    // listen for blur events on all inputs (blur = lost focus)
-    form.addEventListener('blur', (e) => {
-      
-      // get reference to blurred field
-      const field = e.target;
-      // get reference to sp-input-group
-      const parent = field.closest('sp-input-group');
+    const slot = this.shadowRoot.querySelector('slot');
+    const children = slot.assignedElements({ flatten: true });
+    const form = children[0];
 
-      // exclude fields from checking
-      if (
-        field.disabled
-        || field.type === 'file'
-        || field.type === 'reset'
-        || field.type === 'submit'
-        || field.type === 'button'
-      ) return;
+    if (form.tagName !== 'FORM') {
+      throw new Error('Only form allowed as child');
+    }
 
-      if (field.validity.valid === true) {
-        // field is valid: reset aria-invalid to communicate the state of the input to assistive technologies
-        field.setAttribute('aria-invalid', false);
-        // also reset the message
-        parent.setAttribute('error', '');
+    if (children.length > 1) {
+      throw new Error('Only one child allowed');
+    }
+
+    this._form = form;
+
+    form.setAttribute('novalidate', true);
+
+    let inputs = form.querySelectorAll('input, textarea');
+
+    inputs = Array.from(inputs);
+
+    inputs = inputs.map(input => {
+      const type = input.getAttribute('type');
+      let label;
+      if (type === 'radio') {
+        const parent = input.closest('fieldset');
+        label = parent.querySelector('legend');
       } else {
-        // setCustomValidity(field, this.hints);
-        field.setAttribute('aria-invalid', true);
-        parent.setAttribute('error', field.validationMessage);
+        label = document.querySelector(`label[for=${input.id}]`);
       }
-    }, true);
-
-    form.addEventListener('submit', (e) => {
-      e.preventDefault();
-      const fields = [...e.target.elements];
-      const fieldsFiltered = fields.filter(field => !['fieldset', 'button'].includes(field.nodeName.toLowerCase()))
-      if (form.checkValidity() === true) {
-        form.requestSubmit();
-      } else {
-        [...fieldsFiltered].forEach(field => {
-          const parent = field.closest('sp-input-group');
-          if (field.validity.valid === true) {
-            // field is valid: reset aria-invalid to communicate the state of the input to assistive technologies
-            field.setAttribute('aria-invalid', false);
-            // also reset the message
-            parent.setAttribute('error', '');
-          } else {
-            // setCustomValidity(field, this.hints);
-            field.setAttribute('aria-invalid', true);
-            parent.setAttribute('error', field.validationMessage);
-          }
-        });
+      return {
+        element: input,
+        label
       }
     });
+
+    inputs.forEach(input =>
+      input.element.addEventListener('blur', event => {
+      const field = event.target;
+      const { valid } = field.validity;
+
+      if (!valid) this.addErrorMessage({ input });
+      if (valid) this.removeErrorMessage({ input });
+    }));
   }
 
-  connectedCallback() {
-    super.connectedCallback();
-    // disable native browser validation
-    this.form.setAttribute('novalidate', true);
-    // call form validation
-    this._validateForm();
+  addErrorMessage({ input }) {
+    this.removeErrorMessage({ input });
+    const { element, label } = input;
+    const isRadio = element.getAttribute('type') === 'radio';
+    const invalidationNode = isRadio ? element.closest('fieldset') : element;
+    const identifier = isRadio ? element.getAttribute('name') : element.id;
+    const errorId = `${identifier}-error`;
+    invalidationNode.setAttribute('aria-invalid', true);
+    invalidationNode.setAttribute('aria-describedby', errorId);
+
+    const errorSpan = document.createElement('span');
+    errorSpan.setAttribute('id', errorId);
+    errorSpan.innerText = input.element.validationMessage;
+
+    label.insertAdjacentElement('afterend', errorSpan);
+  }
+
+  removeErrorMessage({ input }) {
+    const { element } = input;
+    const isRadio = element.getAttribute('type') === 'radio';
+    const invalidationNode = isRadio ? element.closest('fieldset') : element;
+    const identifier = isRadio ? element.getAttribute('name') : element.id;
+    const errorId = `${identifier}-error`;
+    invalidationNode.removeAttribute('aria-invalid');
+    invalidationNode.removeAttribute('aria-describedby');
+
+    this._form.querySelector(`#${errorId}`)?.remove();
   }
 
   render() {

@@ -1,56 +1,29 @@
 <!doctype html>
-<html lang="de-CH">
+<html lang="en-GB">
 <head>
   <meta charset="utf-8">
-  <link rel="stylesheet" href="../src/static.css" />
+  <script type="module">import '../sp-form.js';</script>
 </head>
-<body class="no-wc">
-  <sp-form
-    hint-required="{field} eingeben"
-    hint-email="{field} benötigt ein @-Symbol"
-    hint-underflow="{field} darf nicht kleiner als {min} sein"
-    hint-overflow="{field} darf nicht grösser als {max} sein"
-  >
-    <form title="sp-form">
-  
-      <fieldset>
-  
-        <legend>Persönliche Angaben</legend>
-        
-        <sp-input-group class="half-width">
-          <label for="firstname">First name</label>
-          <input type="text" name="firstname" id="firstname" required />
-        </sp-input-group>
-  
-        <sp-input-group class="half-width">
-          <label for="lastname">Last name</label>
-          <input type="text" name="lastname" id="lastname" required />
-        </sp-input-group>
-  
-        <sp-input-group class="full-width">
-          <label for="email">E-Mail</label>
-          <input type="email" name="email" id="email" required />
-        </sp-input-group>
-
-        <sp-input-group>
-          <label for="age">Alter</label>
-          <input type="number" name="age" id="age" required min="0" />
-        </sp-input-group>
-
-        <sp-input-group>
-          <label for="message">Nachricht</label>
-          <textarea name="message" id="message" cols="30" rows="10" required></textarea>
-        </sp-input-group>
+<body>
+  <sp-form>
+    <form>
+      <div>
+        <label for="firstname">Your first name</label>
+        <input type="text" id="firstname" required/>
+      </div>
+      <fieldset role="radiogroup">
+        <legend>Radio!</legend>
+        <div>
+          <input type="radio" name="color" id="red" value="red" required>
+          <label for="red">Red</label>
+        </div>
+        <div>
+          <input type="radio" name="color" id="green" value="green" required>
+          <label for="green">Green</label>
+        </div>
       </fieldset>
-  
-      <button type="submit">Submit</button>
+      <button type="submit">Submit!</button>
     </form>
   </sp-form>
-  <script>
-    if (window.customElements) document.querySelector('body').classList.remove('no-wc');
-  </script>
-  <script type="module">
-    import '../sp-form.js'
-  </script>
 </body>
 </html>
