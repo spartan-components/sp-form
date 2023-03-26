@@ -2,28 +2,28 @@
 <html lang="en-GB">
 <head>
   <meta charset="utf-8">
-  <style>
-    body {
-      background: #fafafa;
-    }
-  </style>
+  <script type="module">import '../sp-form.js';</script>
 </head>
 <body>
-  <div id="demo"></div>
-
-  <script type="module">
-    import { html, render } from 'lit';
-    import '../sp-form.js';
-
-    const title = 'Hello owc World!';
-    render(
-      html`
-        <sp-form .title=${title}>
-          some light-dom
-        </sp-form>
-      `,
-      document.querySelector('#demo')
-    );
-  </script>
+  <sp-form>
+    <form>
+      <div>
+        <label for="firstname">Your first name</label>
+        <input type="text" id="firstname" required/>
+      </div>
+      <fieldset role="radiogroup">
+        <legend>Radio!</legend>
+        <div>
+          <input type="radio" name="color" id="red" value="red" required>
+          <label for="red">Red</label>
+        </div>
+        <div>
+          <input type="radio" name="color" id="green" value="green" required>
+          <label for="green">Green</label>
+        </div>
+      </fieldset>
+      <button type="submit">Submit!</button>
+    </form>
+  </sp-form>
 </body>
 </html>
