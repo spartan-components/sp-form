@@ -1,9 +1,9 @@
 {
-  "name": "sp-form",
+  "name": "@spartan-components/sp-form",
   "description": "Webcomponent sp-form following open-wc recommendations",
   "license": "MIT",
   "author": "sp-form",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "main": "index.js",
   "module": "index.js",
   "scripts": {
