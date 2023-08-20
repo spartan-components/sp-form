@@ -26,7 +26,7 @@ export class SpForm extends LitElement {
 
     form.setAttribute('novalidate', true);
 
-    let inputs = form.querySelectorAll('input, textarea');
+    let inputs = form.querySelectorAll('input, textarea, select');
 
     inputs = Array.from(inputs);
 
@@ -73,7 +73,8 @@ export class SpForm extends LitElement {
   addErrorMessage({ input }) {
     this.removeErrorMessage({ input });
     const { element, label } = input;
-    const isRadio = element.getAttribute('type') === 'radio';
+    console.log(element.tagName)
+    const isRadio = element.getAttribute('type') === "radio";
     const invalidationNode = isRadio ? element.closest('fieldset') : element;
     const identifier = isRadio ? element.getAttribute('name') : element.id;
     const errorId = `${identifier}-error`;
