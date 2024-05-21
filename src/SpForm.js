@@ -56,10 +56,8 @@ export class SpForm extends LitElement {
 
     form.addEventListener('submit', event => {
       event.preventDefault();
-      
-      if (form.checkValidity()) {
-        form.submit();
-      } else {
+
+      if (!form.checkValidity()) {
         inputs.forEach(input => {
           const { valid } = input.element.validity;
 
