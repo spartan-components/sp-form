@@ -33,7 +33,7 @@ export class SpForm extends LitElement {
     inputs = inputs.map(input => {
       const type = input.getAttribute('type');
       let label;
-      if (type === 'radio') {
+      if (type === 'radio' || type == 'checkbox') {
         const parent = input.closest('fieldset');
         label = parent.querySelector('legend');
       } else {
@@ -72,9 +72,9 @@ export class SpForm extends LitElement {
     this.removeErrorMessage({ input });
     const { element, label } = input;
     console.log(element.tagName)
-    const isRadio = element.getAttribute('type') === "radio";
-    const invalidationNode = isRadio ? element.closest('fieldset') : element;
-    const identifier = isRadio ? element.getAttribute('name') : element.id;
+    const isMultiElement = ["radio", "checkbox"].includes(element.getAttribute('type'));
+    const invalidationNode = isMultiElement ? element.closest('fieldset') : element;
+    const identifier = isMultiElement ? element.getAttribute('name') : element.id;
     const errorId = `${identifier}-error`;
     invalidationNode.setAttribute('aria-invalid', true);
     invalidationNode.setAttribute('aria-describedby', errorId);
@@ -88,9 +88,9 @@ export class SpForm extends LitElement {
 
   removeErrorMessage({ input }) {
     const { element } = input;
-    const isRadio = element.getAttribute('type') === 'radio';
-    const invalidationNode = isRadio ? element.closest('fieldset') : element;
-    const identifier = isRadio ? element.getAttribute('name') : element.id;
+    const isMultiElement = ["radio", "checkbox"].includes(element.getAttribute('type'));
+    const invalidationNode = isMultiElement ? element.closest('fieldset') : element;
+    const identifier = isMultiElement ? element.getAttribute('name') : element.id;
     const errorId = `${identifier}-error`;
     invalidationNode.removeAttribute('aria-invalid');
     invalidationNode.removeAttribute('aria-describedby');
